@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Gemini API</title>
+</head>
+<body>
+    <h1>Gemini API Test</h1>
+    <input type="text" id="apiKey" placeholder="Paste API Key" style="width: 400px">
+    <button onclick="testAPI()">Test API</button>
+    <pre id="result"></pre>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        window.testAPI = async function() {
+            const apiKey = document.getElementById('apiKey').value;
+            const resultEl = document.getElementById('result');
+            
+            if (!apiKey) {
+                resultEl.textContent = 'Please enter API key';
+                return;
+            }
+
+            resultEl.textContent = 'Testing...';
+
+            try {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                
+                // Try different models
+                const modelsToTry = [
+                    'gemini-pro',
+                    'gemini-1.5-pro',
+                    'gemini-1.5-flash',
+                    'models/gemini-pro',
+                    'models/gemini-1.5-flash'
+                ];
+
+                let results = 'Testing models:\n\n';
+
+                for (const modelName of modelsToTry) {
+                    try {
+                        results += `Testing: ${modelName}... `;
+                        const model = genAI.getGenerativeModel({ model: modelName });
+                        const result = await model.generateContent('Say hi');
+                        const text = result.response.text();
+                        results += `✓ WORKS! Response: ${text.substring(0, 50)}\n`;
+                        break; // Stop on first success
+                    } catch (err) {
+                        results += `✗ Failed: ${err.message}\n`;
+                    }
+                }
+
+                resultEl.textContent = results;
+            } catch (error) {
+                resultEl.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

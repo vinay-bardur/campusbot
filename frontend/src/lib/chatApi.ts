@@ -1,5 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 type Message = { role: "user" | "assistant"; content: string };
 
 const SYSTEM_PROMPT = `You are a helpful campus assistant chatbot for a university. Your role is to:
@@ -23,45 +21,67 @@ export async function streamChat({
   onError: (error: string) => void;
 }) {
   try {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const apiKey = import.meta.env.VITE_GROQ_API_KEY;
     
     if (!apiKey || apiKey.trim() === '') {
-      throw new Error("Gemini API key is not configured. Please add VITE_GEMINI_API_KEY to your .env file.");
+      throw new Error("Groq API key is not configured.");
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-      systemInstruction: SYSTEM_PROMPT
-    });
-
-    // Build conversation history
-    const history = messages.slice(0, -1).map((msg) => ({
-      role: msg.role === "assistant" ? "model" : "user",
-      parts: [{ text: msg.content }],
-    }));
-
-    const chat = model.startChat({
-      history,
-      generationConfig: {
-        maxOutputTokens: 2000,
-        temperature: 0.7,
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
       },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages.map(m => ({ role: m.role, content: m.content }))
+        ],
+        temperature: 0.7,
+        max_tokens: 2000,
+        stream: true,
+      }),
     });
 
-    const lastMessage = messages[messages.length - 1];
-    const result = await chat.sendMessageStream(lastMessage.content);
+    if (!response.ok) {
+      throw new Error(`Groq API error: ${response.statusText}`);
+    }
 
-    for await (const chunk of result.stream) {
-      const text = chunk.text();
-      if (text) {
-        onDelta(text);
+    const reader = response.body?.getReader();
+    const decoder = new TextDecoder();
+
+    if (!reader) throw new Error("No response body");
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\n").filter(line => line.trim() !== "");
+
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+
+          try {
+            const parsed = JSON.parse(data);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              onDelta(content);
+            }
+          } catch (e) {
+            // Skip invalid JSON
+          }
+        }
       }
     }
 
     onDone();
   } catch (error) {
-    console.error("Gemini API error:", error);
+    console.error("Groq API error:", error);
     onError(error instanceof Error ? error.message : "Failed to get AI response");
   }
 }
