@@ -4,7 +4,11 @@
 -- ============================================================================
 
 -- Create enum for user roles
-CREATE TYPE IF NOT EXISTS public.app_role AS ENUM ('admin', 'user');
+DO $$ BEGIN
+  CREATE TYPE public.app_role AS ENUM ('admin', 'user');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
 
 -- Create user_roles table
 CREATE TABLE IF NOT EXISTS public.user_roles (
@@ -200,8 +204,8 @@ CREATE TRIGGER update_announcements_updated_at
 -- Sample FAQs
 INSERT INTO public.faqs (question, answer, category) VALUES
 ('What are the library hours?', 'The library is open Monday-Saturday from 9AM-6PM', 'Facilities'),
-('How do I reset my campus password?', 'Visit the IT Help Desk in Building A or email support@campus.edu', 'IT Support'),
-('Where is the cafeteria located?', 'The main cafeteria is in Building B, ground floor.', 'Facilities')
+('How do I reset my campus password?', 'Visit the IT Help Desk on the 2nd floor to the right of the entrance. Contact Mahesh Sir for assistance.', 'IT Support'),
+('Where is the cafeteria located?', 'The main cafeteria is in Building B, ground floor near GymKhana.', 'Facilities')
 ON CONFLICT DO NOTHING;
 
 -- Sample announcements
