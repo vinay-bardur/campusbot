@@ -2,8 +2,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 type Message = { role: "user" | "assistant"; content: string };
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-
 const SYSTEM_PROMPT = `You are a helpful campus assistant chatbot for a university. Your role is to:
 - Answer student queries about campus facilities, events, academics, and general information
 - Provide accurate information about campus locations, timings, and services
@@ -25,7 +23,17 @@ export async function streamChat({
   onError: (error: string) => void;
 }) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    
+    if (!apiKey || apiKey.trim() === '') {
+      throw new Error("Gemini API key is not configured. Please add VITE_GEMINI_API_KEY to your .env file.");
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: SYSTEM_PROMPT
+    });
 
     // Build conversation history
     const history = messages.slice(0, -1).map((msg) => ({
@@ -36,15 +44,13 @@ export async function streamChat({
     const chat = model.startChat({
       history,
       generationConfig: {
-        maxOutputTokens: 1000,
+        maxOutputTokens: 2000,
         temperature: 0.7,
       },
     });
 
     const lastMessage = messages[messages.length - 1];
-    const prompt = `${SYSTEM_PROMPT}\n\nUser: ${lastMessage.content}\nAssistant:`;
-
-    const result = await chat.sendMessageStream(prompt);
+    const result = await chat.sendMessageStream(lastMessage.content);
 
     for await (const chunk of result.stream) {
       const text = chunk.text();
