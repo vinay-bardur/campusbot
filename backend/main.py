@@ -20,8 +20,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Dynamic Campus Query Chatbot API",
-    description="API for managing campus FAQs, announcements, and chat interactions",
+    title="ClarifyAI API",
+    description="Intelligent campus assistant API for FAQs, announcements, and chat",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -37,13 +37,11 @@ app.add_middleware(
 )
 
 
-# ============================================================================
-# Global Exception Handlers
-# ============================================================================
+
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    """Handle validation errors with detailed messages."""
+
     logger.error(f"Validation error: {exc.errors()}")
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -56,7 +54,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    """Handle all uncaught exceptions."""
+
     logger.error(f"Unhandled exception: {str(exc)}", exc_info=True)
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -67,14 +65,12 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# ============================================================================
-# Startup and Shutdown Events
-# ============================================================================
+
 
 @app.on_event("startup")
 async def startup_event():
-    """Test database connection on startup."""
-    logger.info("Starting up Campus Query Chatbot API...")
+
+    logger.info("Starting up ClarifyAI API...")
     try:
         db = get_supabase_service()
         logger.info("✓ Supabase connection established successfully")
@@ -85,22 +81,18 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Cleanup on shutdown."""
-    logger.info("Shutting down Campus Query Chatbot API...")
+
+    logger.info("Shutting down ClarifyAI API...")
 
 
-# ============================================================================
-# Include Routers
-# ============================================================================
+
 
 app.include_router(faqs.router, prefix="/api/v1", tags=["FAQs"])
 app.include_router(announcements.router, prefix="/api/v1", tags=["Announcements"])
 app.include_router(chat_logs.router, prefix="/api/v1", tags=["Chat Logs"])
 
 
-# ============================================================================
-# Response Models
-# ============================================================================
+
 class UserInfoResponse(BaseModel):
     id: str
     email: Optional[str] = None
@@ -112,17 +104,13 @@ class ProtectedTestResponse(BaseModel):
     user: dict
 
 
-# ============================================================================
-# Core Endpoints
-# ============================================================================
+
 
 @app.get("/")
 def root():
-    """
-    API root endpoint with information about available endpoints.
-    """
+
     return {
-        "message": "Campus Query Chatbot API",
+        "message": "ClarifyAI API",
         "version": "1.0.0",
         "status": "operational",
         "endpoints": {
@@ -143,7 +131,7 @@ def ping():
 
 @app.get("/api/v1/auth/me", response_model=UserInfoResponse)
 def get_me(current_user: AuthUser = Depends(get_current_user)):
-    """Get current authenticated user information"""
+
     # Determine auth provider from user metadata if available
     auth_provider = "email"  # Default to email
     if current_user.email and "google" in current_user.email.lower():
@@ -158,7 +146,7 @@ def get_me(current_user: AuthUser = Depends(get_current_user)):
 
 @app.post("/api/v1/protected/test", response_model=ProtectedTestResponse)
 def protected_test(current_user: AuthUser = Depends(get_current_user)):
-    """Test endpoint for authentication"""
+
     return ProtectedTestResponse(
         message="Authentication successful",
         user={

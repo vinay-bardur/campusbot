@@ -184,7 +184,7 @@ const Chat = () => {
         {/* Header */}
         <header className="flex items-center gap-3 border-b bg-card px-4 py-3 shadow-sm">
           <ChatSidebarTrigger onClick={() => setIsMobileSidebarOpen(true)} />
-          <h1 className="text-lg font-semibold">Campus Assistant</h1>
+          <h1 className="text-lg font-semibold">ClarifyAI</h1>
         </header>
 
         {/* Messages Area */}
@@ -196,7 +196,7 @@ const Chat = () => {
                   <Loader2 className="h-12 w-12 text-primary" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Welcome to Campus Assistant!</h2>
+                  <h2 className="text-2xl font-bold">Welcome to ClarifyAI!</h2>
                   <p className="text-muted-foreground">
                     Ask me anything about campus facilities, events, or academics.
                   </p>

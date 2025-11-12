@@ -22,14 +22,12 @@ const Index = () => {
         <div className="container relative mx-auto px-4 py-20">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-              Campus Assistant
               <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                AI Chatbot
+                ClarifyAI
               </span>
             </h1>
             <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-              Your 24/7 intelligent companion for all campus queries. Get instant answers about
-              facilities, events, academics, and more.
+              Your intelligent campus assistant providing instant answers to all your queries about facilities, events, academics, and more.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Button

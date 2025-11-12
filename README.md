@@ -1,12 +1,12 @@
-# Campus Chatbot 🎓
+# ClarifyAI 🎓
 
-AI-powered campus assistant chatbot with admin dashboard for managing FAQs and announcements.
+Intelligent campus assistant chatbot with admin dashboard for managing FAQs and announcements.
 
 ## 🏗️ Tech Stack
 - **Frontend**: Vite + React + TypeScript + Tailwind CSS + shadcn/ui
-- **Backend**: FastAPI + Supabase + Gemini AI
+- **Backend**: FastAPI + Supabase + Groq AI (Llama 3.1)
 - **Database**: Supabase (PostgreSQL)
-- **AI**: Google Gemini API
+- **AI**: Groq API with Llama 3.1-8B-Instant
 
 ## 🚀 Quick Start
 
@@ -22,7 +22,6 @@ AI-powered campus assistant chatbot with admin dashboard for managing FAQs and a
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_KEY=your_anon_key
 SUPABASE_JWT_SECRET=your_anon_key
-GEMINI_API_KEY=your_gemini_key
 ```
 
 **Frontend** (`frontend/.env`):
@@ -30,7 +29,7 @@ GEMINI_API_KEY=your_gemini_key
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_anon_key
 VITE_API_URL=http://localhost:8000
-VITE_GEMINI_API_KEY=your_gemini_key
+VITE_GROQ_API_KEY=your_groq_api_key
 ```
 
 ### 3. Start Backend
@@ -51,7 +50,7 @@ npm run dev
 Open: http://localhost:5173
 
 ## ✨ Features
-- 🤖 AI-powered chatbot using Gemini
+- 🤖 AI-powered chatbot using Groq (Llama 3.1)
 - 🔐 Secure authentication (Google OAuth + Email)
 - 📊 Admin dashboard for content management
 - 💬 Real-time chat interface with history
@@ -69,7 +68,7 @@ WHERE email = 'your-email@example.com';
 
 ## 📁 Project Structure
 ```
-campus-chatbot/
+clarifyai/
 ├── backend/              # FastAPI backend
 │   ├── routers/         # API endpoints
 │   ├── services/        # Business logic
@@ -88,12 +87,6 @@ campus-chatbot/
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
-
-## 📚 Documentation
-- **FINAL_SETUP.md** - Detailed setup guide
-- **INTEGRATION_COMPLETE.md** - Technical details
-- **QUICK_REFERENCE.md** - Commands & URLs
-- **NEW_SUPABASE_SETUP.md** - New project setup
 
 ## 📝 License
 MIT

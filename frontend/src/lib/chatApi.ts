@@ -1,13 +1,6 @@
 type Message = { role: "user" | "assistant"; content: string };
 
-const SYSTEM_PROMPT = `You are a helpful campus assistant chatbot for a university. Your role is to:
-- Answer student queries about campus facilities, events, academics, and general information
-- Provide accurate information about campus locations, timings, and services
-- Be concise, friendly, and professional in your responses
-- If you don't know something specific, suggest contacting the campus administration
-- Help students navigate campus life and resources
-
-Keep your responses clear and student-friendly.`;
+const SYSTEM_PROMPT = `You are ClarifyAI, an intelligent campus assistant. Provide accurate, concise answers about campus facilities, events, academics, and services. Be friendly and professional.`;
 
 export async function streamChat({
   messages,
@@ -73,7 +66,7 @@ export async function streamChat({
               onDelta(content);
             }
           } catch (e) {
-            // Skip invalid JSON
+            continue;
           }
         }
       }
