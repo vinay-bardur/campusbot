@@ -1,6 +1,17 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 type Message = { role: "user" | "assistant"; content: string };
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+
+const SYSTEM_PROMPT = `You are a helpful campus assistant chatbot for a university. Your role is to:
+- Answer student queries about campus facilities, events, academics, and general information
+- Provide accurate information about campus locations, timings, and services
+- Be concise, friendly, and professional in your responses
+- If you don't know something specific, suggest contacting the campus administration
+- Help students navigate campus life and resources
+
+Keep your responses clear and student-friendly.`;
 
 export async function streamChat({
   messages,
@@ -14,90 +25,37 @@ export async function streamChat({
   onError: (error: string) => void;
 }) {
   try {
-    const resp = await fetch(CHAT_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    // Build conversation history
+    const history = messages.slice(0, -1).map((msg) => ({
+      role: msg.role === "assistant" ? "model" : "user",
+      parts: [{ text: msg.content }],
+    }));
+
+    const chat = model.startChat({
+      history,
+      generationConfig: {
+        maxOutputTokens: 1000,
+        temperature: 0.7,
       },
-      body: JSON.stringify({ messages }),
     });
 
-    if (!resp.ok) {
-      if (resp.status === 429) {
-        onError("Rate limits exceeded. Please try again later.");
-        return;
-      }
-      if (resp.status === 402) {
-        onError("Service unavailable. Please contact support.");
-        return;
-      }
-      throw new Error("Failed to start stream");
-    }
+    const lastMessage = messages[messages.length - 1];
+    const prompt = `${SYSTEM_PROMPT}\n\nUser: ${lastMessage.content}\nAssistant:`;
 
-    if (!resp.body) throw new Error("No response body");
+    const result = await chat.sendMessageStream(prompt);
 
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let textBuffer = "";
-    let streamDone = false;
-
-    while (!streamDone) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      
-      textBuffer += decoder.decode(value, { stream: true });
-
-      let newlineIndex: number;
-      while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-        let line = textBuffer.slice(0, newlineIndex);
-        textBuffer = textBuffer.slice(newlineIndex + 1);
-
-        if (line.endsWith("\r")) line = line.slice(0, -1);
-        if (line.startsWith(":") || line.trim() === "") continue;
-        if (!line.startsWith("data: ")) continue;
-
-        const jsonStr = line.slice(6).trim();
-        if (jsonStr === "[DONE]") {
-          streamDone = true;
-          break;
-        }
-
-        try {
-          const parsed = JSON.parse(jsonStr);
-          const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-          if (content) onDelta(content);
-        } catch {
-          textBuffer = line + "\n" + textBuffer;
-          break;
-        }
-      }
-    }
-
-    // Final flush
-    if (textBuffer.trim()) {
-      for (let raw of textBuffer.split("\n")) {
-        if (!raw) continue;
-        if (raw.endsWith("\r")) raw = raw.slice(0, -1);
-        if (raw.startsWith(":") || raw.trim() === "") continue;
-        if (!raw.startsWith("data: ")) continue;
-        
-        const jsonStr = raw.slice(6).trim();
-        if (jsonStr === "[DONE]") continue;
-        
-        try {
-          const parsed = JSON.parse(jsonStr);
-          const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-          if (content) onDelta(content);
-        } catch {
-          // Ignore partial leftovers
-        }
+    for await (const chunk of result.stream) {
+      const text = chunk.text();
+      if (text) {
+        onDelta(text);
       }
     }
 
     onDone();
   } catch (error) {
-    console.error("Stream error:", error);
-    onError(error instanceof Error ? error.message : "Unknown error occurred");
+    console.error("Gemini API error:", error);
+    onError(error instanceof Error ? error.message : "Failed to get AI response");
   }
 }
