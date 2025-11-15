@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
-import { MessageSquare, Zap, Clock, Shield } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -15,103 +13,54 @@ const Index = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-subtle">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero opacity-10" />
-        <div className="container relative mx-auto px-4 py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-              <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                ClarifyAI
-              </span>
-            </h1>
-            <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-              Your intelligent campus assistant providing instant answers to all your queries about facilities, events, academics, and more.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button
-                size="lg"
-                onClick={() => navigate("/auth")}
-                className="bg-gradient-primary text-lg shadow-lg transition-transform hover:scale-105"
-              >
-                Get Started
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate("/auth")}
-                className="text-lg"
-              >
-                Sign In
-              </Button>
-            </div>
+    <div className="h-full bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-black/5">
+        <div className="px-8 md:px-16 py-4 flex items-center justify-between">
+          <div className="text-xl font-bold text-black">ClarifyAI</div>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => navigate("/auth")}
+              className="text-[#007AFF] font-normal text-[17px] hover:text-[#0051D5] hover:bg-[rgba(0,122,255,0.08)] px-6 py-2 rounded-full transition-all duration-200"
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => navigate("/auth")}
+              className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-8 py-3 rounded-full text-[17px] font-medium transition-all duration-200 hover:shadow-[0_8px_16px_rgba(0,122,255,0.3)] hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Get Started
+            </button>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Features Section */}
-      <div className="container mx-auto px-4 py-20">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-xl bg-card p-6 shadow-md transition-shadow hover:shadow-lg">
-            <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
-              <Clock className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">24/7 Availability</h3>
-            <p className="text-muted-foreground">
-              Get answers to your questions anytime, anywhere. No waiting, no schedules.
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-card p-6 shadow-md transition-shadow hover:shadow-lg">
-            <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
-              <Zap className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Instant Answers</h3>
-            <p className="text-muted-foreground">
-              Powered by advanced AI to provide accurate information in seconds.
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-card p-6 shadow-md transition-shadow hover:shadow-lg">
-            <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
-              <MessageSquare className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Smart Conversations</h3>
-            <p className="text-muted-foreground">
-              Natural language understanding for intuitive and helpful interactions.
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-card p-6 shadow-md transition-shadow hover:shadow-lg">
-            <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
-              <Shield className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold">Secure & Private</h3>
-            <p className="text-muted-foreground">
-              Your conversations are protected with enterprise-grade security.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="container mx-auto px-4 py-20">
-        <div className="rounded-2xl bg-gradient-primary p-12 text-center shadow-xl">
-          <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
-            Ready to explore your campus?
-          </h2>
-          <p className="mb-8 text-lg text-white/90">
-            Join thousands of students using our AI assistant every day
+      {/* Hero Section - Full Viewport */}
+      <div className="min-h-screen flex flex-col justify-center items-center px-8 md:px-16">
+        <div className="text-center max-w-2xl mx-auto">
+          <h1 className="text-[clamp(48px,8vw,80px)] font-bold leading-[1.1] tracking-[-0.02em] text-[#1d1d1f] mb-6">
+            Your campus. Simplified.
+          </h1>
+          <p className="text-[clamp(21px,3vw,28px)] font-normal text-[#6e6e73] leading-[1.4] mb-10">
+            Instant answers about facilities, events, and academics.
           </p>
-          <Button
-            size="lg"
-            variant="secondary"
-            onClick={() => navigate("/auth")}
-            className="text-lg shadow-lg"
-          >
-            Start Chatting Now
-          </Button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => navigate("/auth")}
+              className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-8 py-3.5 rounded-full text-[17px] font-medium transition-all duration-200 hover:shadow-[0_8px_16px_rgba(0,122,255,0.3)] hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Get Started
+            </button>
+            <button 
+              onClick={() => navigate("/auth")}
+              className="text-[#007AFF] font-normal text-[17px] px-8 py-3.5 hover:text-[#0051D5] hover:bg-[rgba(0,122,255,0.08)] rounded-full transition-all duration-200"
+            >
+              Sign In
+            </button>
+          </div>
+          <p className="text-[15px] text-[#86868b] text-center mt-[60px]">
+            Available 24/7. Powered by AI. Secure by design.
+          </p>
         </div>
       </div>
     </div>

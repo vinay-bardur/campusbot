@@ -75,14 +75,13 @@ export const ChatSidebar = ({
 
   const sidebarContent = (
     <>
-      <div className="p-4">
+      <div className="p-6">
         <Button
           onClick={() => {
             onNewChat();
             onMobileClose();
           }}
-          className="w-full justify-start gap-2"
-          variant="default"
+          className="w-full justify-start gap-3 bg-[#007AFF] hover:bg-[#0056CC] text-white py-3 rounded-[8px] font-medium"
         >
           <MessageSquarePlus className="h-4 w-4" />
           New Chat
@@ -91,14 +90,17 @@ export const ChatSidebar = ({
 
       <Separator />
 
-      <ScrollArea className="flex-1 px-4">
-        <div className="space-y-2 py-4">
-          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Recent Chats</h3>
+      <ScrollArea className="flex-1 px-6">
+        <div className="space-y-1 py-4">
+          <h3 className="mb-4 text-[13px] font-medium text-[#6e6e73] uppercase tracking-wide">Recent Chats</h3>
           {conversations.map((conv) => (
             <Button
               key={conv.id}
-              variant={currentConversationId === conv.id ? "secondary" : "ghost"}
-              className="w-full justify-start gap-2"
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal hover:bg-[#f5f5f7]",
+                currentConversationId === conv.id && "bg-[#f5f5f7] text-[#007AFF]"
+              )}
               onClick={() => {
                 onSelectConversation(conv.id);
                 onMobileClose();
@@ -109,7 +111,7 @@ export const ChatSidebar = ({
             </Button>
           ))}
           {conversations.length === 0 && (
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-[15px] text-[#86868b] py-8">
               No conversations yet
             </p>
           )}
@@ -118,23 +120,10 @@ export const ChatSidebar = ({
 
       <Separator />
 
-      <div className="space-y-2 p-4">
-        {isAdmin && (
-          <Button
-            variant="outline"
-            className="w-full justify-start gap-2"
-            onClick={() => {
-              navigate("/admin");
-              onMobileClose();
-            }}
-          >
-            <Shield className="h-4 w-4" />
-            Admin Dashboard
-          </Button>
-        )}
+      <div className="space-y-2 p-6">
         <Button
-          variant="outline"
-          className="w-full justify-start gap-2"
+          variant="ghost"
+          className="w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal hover:bg-[#f5f5f7]"
           onClick={() => {
             navigate("/profile");
             onMobileClose();
@@ -144,8 +133,8 @@ export const ChatSidebar = ({
           Profile
         </Button>
         <Button
-          variant="outline"
-          className="w-full justify-start gap-2 text-destructive hover:bg-destructive/10"
+          variant="ghost"
+          className="w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal text-[#ff3b30] hover:bg-[#ff3b30]/10"
           onClick={handleSignOut}
         >
           <LogOut className="h-4 w-4" />
@@ -168,7 +157,7 @@ export const ChatSidebar = ({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r bg-card shadow-lg transition-transform duration-300 md:relative md:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-[#d2d2d7] bg-white shadow-lg transition-transform duration-300 md:relative md:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

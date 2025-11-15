@@ -201,18 +201,24 @@ CREATE TRIGGER update_announcements_updated_at
 -- Insert sample data (optional)
 -- ============================================================================
 
--- Sample FAQs
+-- Sample FAQs - KLE BCA Specific
 INSERT INTO public.faqs (question, answer, category) VALUES
-('What are the library hours?', 'The library is open Monday-Saturday from 9AM-6PM', 'Facilities'),
-('How do I reset my campus password?', 'Visit the IT Help Desk on the 2nd floor to the right of the entrance. Contact Mahesh Sir for assistance.', 'IT Support'),
-('Where is the cafeteria located?', 'The main cafeteria is in Building B, ground floor near GymKhana.', 'Facilities')
+('What are the BCA course fees at KLE?', 'The BCA program at KLE P.C. Jabin Science College costs ₹1,00,000 per year. Total for 3 years is ₹3,00,000.', 'Admissions'),
+('Who is the BCA coordinator?', 'Mr. Siddalingappa Kadakol is the Coordinator for the BCA department at KLE.', 'Faculty'),
+('Where is the IT Help Desk?', 'For IT support, contact Mr. Mahesh Rao Koppal (Assistant Professor). He handles IT Help Desk queries.', 'Facilities'),
+('Is KLE BCA affiliated to any university?', 'Yes, KLE BCA is affiliated to Karnataka University, Dharwad. However, the institute has academic independence and conducts its own exams. Degrees are awarded by Karnataka University.', 'Academics'),
+('When was the BCA department established?', 'The BCA department was started in 1999 as a Department of Computer Science. It now operates with its own campus at P. C. Jabin Science College.', 'About'),
+('What is the 4 C''s philosophy?', 'KLE BCA focuses on forming students who are Competent, Committed, Creative, and Compassionate. Education is about quality of knowledge that builds character.', 'About'),
+('How many faculty members are there?', 'KLE BCA has 30 Assistant Professors, 5 Lab Instructors, and 4 Office Staff members providing comprehensive support to students.', 'Faculty'),
+('What facilities are available at KLE BCA?', 'KLE BCA offers excellent hardware and software resources, modern computer labs, and a well-equipped library for student learning.', 'Facilities')
 ON CONFLICT DO NOTHING;
 
--- Sample announcements
+-- Sample announcements - KLE BCA Specific
 INSERT INTO public.announcements (title, content) VALUES
-('Welcome to Campus!', 'Welcome to the new academic year! We''re excited to have you here.'),
-('Library Maintenance', 'The library will be closed for maintenance on Saturday, Nov 15th.'),
-('New Course Registration', 'Course registration for Spring semester opens on December 1st.')
+('Welcome to KLE BCA!', 'Welcome to K.L.E.S''s Bachelor of Computer Application program at P.C. Jabin Science College, Dharwad. We''re excited to have you join our community of future IT professionals.'),
+('Academic Independence Notice', 'KLE BCA operates with academic independence. We conduct our own examinations while degrees are awarded by Karnataka University, Dharwad.'),
+('IT Support Available', 'For any technical assistance, please contact Mr. Mahesh Rao Koppal at the IT Help Desk. Our faculty is here to support your learning journey.'),
+('4 C''s Philosophy', 'At KLE BCA, we focus on developing Competent, Committed, Creative, and Compassionate graduates. Education is about the quality of knowledge that builds character.')
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================

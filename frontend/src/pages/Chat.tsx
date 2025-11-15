@@ -182,42 +182,37 @@ const Chat = () => {
 
       <div className="flex flex-1 flex-col">
         {/* Header */}
-        <header className="flex items-center gap-3 border-b bg-card px-4 py-3 shadow-sm">
+        <header className="flex items-center gap-3 border-b border-[#d2d2d7] bg-white/80 backdrop-blur-xl px-6 py-4">
           <ChatSidebarTrigger onClick={() => setIsMobileSidebarOpen(true)} />
-          <h1 className="text-lg font-semibold">ClarifyAI</h1>
+          <h1 className="text-[20px] font-semibold text-[#1d1d1f]">ClarifyAI</h1>
         </header>
 
         {/* Messages Area */}
         <ScrollArea className="flex-1 p-4" ref={scrollRef}>
           <div className="mx-auto max-w-3xl space-y-4">
             {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center space-y-6 py-12 text-center">
-                <div className="rounded-full bg-primary/10 p-6">
-                  <Loader2 className="h-12 w-12 text-primary" />
-                </div>
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">Welcome to ClarifyAI!</h2>
-                  <p className="text-muted-foreground">
-                    Ask me anything about campus facilities, events, or academics.
+              <div className="flex flex-col items-center justify-center space-y-8 py-16 text-center">
+                <div className="space-y-4">
+                  <h2 className="text-[32px] font-semibold text-[#1d1d1f]">Welcome to ClarifyAI!</h2>
+                  <p className="text-[19px] text-[#6e6e73] leading-[1.4] max-w-[500px]">
+                    Your AI assistant for KLE BCA at P.C. Jabin Science College. Ask about admissions, fees, faculty, or facilities.
                   </p>
                 </div>
-                <div className="flex flex-wrap justify-center gap-2">
-                  <Button
-                    variant="outline"
+                <div className="flex flex-wrap justify-center gap-3">
+                  <button
                     onClick={() => handleQuickAction("faqs")}
-                    className="gap-2"
+                    className="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] px-5 py-3 rounded-[20px] text-[15px] font-normal transition-colors flex items-center gap-2"
                   >
                     <HelpCircle className="h-4 w-4" />
                     View FAQs
-                  </Button>
-                  <Button
-                    variant="outline"
+                  </button>
+                  <button
                     onClick={() => handleQuickAction("announcements")}
-                    className="gap-2"
+                    className="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] px-5 py-3 rounded-[20px] text-[15px] font-normal transition-colors flex items-center gap-2"
                   >
                     <Megaphone className="h-4 w-4" />
                     Latest Announcements
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}

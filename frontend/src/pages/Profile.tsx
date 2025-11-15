@@ -9,39 +9,38 @@ const Profile = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-subtle p-4">
-      <div className="container mx-auto max-w-4xl py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Profile</h1>
-          <Button variant="outline" onClick={() => navigate("/chat")}>
+    <div className="min-h-screen bg-white p-10">
+      <div className="container mx-auto max-w-4xl py-16">
+        <div className="mb-16 flex items-center justify-between">
+          <h1 className="text-[48px] font-semibold text-[#1d1d1f]">Profile</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => navigate("/chat")}
+            className="border-[#d2d2d7] text-[#1d1d1f] hover:bg-[#f5f5f7]"
+          >
             Back to Chat
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
+        <div className="grid gap-12 md:grid-cols-2">
+          <Card className="border-[#d2d2d7] shadow-none">
+            <CardHeader className="pb-8">
+              <CardTitle className="text-[24px] font-semibold text-[#1d1d1f] flex items-center gap-3">
+                <User className="h-6 w-6" />
                 Account Information
               </CardTitle>
-              <CardDescription>Your account details</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-8 px-8 pb-8">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Email</p>
-                <p className="flex items-center gap-2 text-lg">
+                <p className="text-[14px] font-medium text-[#6e6e73] mb-2">Email</p>
+                <p className="flex items-center gap-3 text-[16px] text-[#1d1d1f]">
                   <Mail className="h-4 w-4" />
                   {user?.email}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">User ID</p>
-                <p className="break-all text-sm">{user?.id}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Role</p>
-                <p className="flex items-center gap-2">
+                <p className="text-[14px] font-medium text-[#6e6e73] mb-2">Role</p>
+                <p className="flex items-center gap-3 text-[16px] text-[#1d1d1f]">
                   <Shield className="h-4 w-4" />
                   {isAdmin ? "Administrator" : "User"}
                 </p>
@@ -49,46 +48,26 @@ const Profile = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
-                Activity
+          <Card className="border-[#d2d2d7] shadow-none">
+            <CardHeader className="pb-8">
+              <CardTitle className="text-[24px] font-semibold text-[#1d1d1f] flex items-center gap-3">
+                <MessageSquare className="h-6 w-6" />
+                Chat History
               </CardTitle>
-              <CardDescription>Your chat activity</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                View your chat history and conversations in the main chat interface.
+            <CardContent className="px-8 pb-8">
+              <p className="text-[16px] text-[#6e6e73] mb-6">
+                View your conversations
               </p>
-              <Button
-                className="mt-4"
+              <button
                 onClick={() => navigate("/chat")}
+                className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-6 py-3 rounded-[8px] text-[16px] font-medium transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,122,255,0.3)] hover:-translate-y-0.5 active:translate-y-0"
               >
                 Go to Chat
-              </Button>
+              </button>
             </CardContent>
           </Card>
         </div>
-
-        {isAdmin && (
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>Admin Access</CardTitle>
-              <CardDescription>
-                You have administrator privileges
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-muted-foreground">
-                Access the admin dashboard to manage FAQs and announcements.
-              </p>
-              <Button onClick={() => navigate("/admin")}>
-                Open Admin Dashboard
-              </Button>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );
