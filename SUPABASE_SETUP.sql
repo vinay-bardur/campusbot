@@ -203,14 +203,28 @@ CREATE TRIGGER update_announcements_updated_at
 
 -- Sample FAQs - KLE BCA Specific
 INSERT INTO public.faqs (question, answer, category) VALUES
+-- Admissions & Fees
 ('What are the BCA course fees at KLE?', 'The BCA program at KLE P.C. Jabin Science College costs ₹1,00,000 per year. Total for 3 years is ₹3,00,000.', 'Admissions'),
+('What is the duration of the BCA program?', 'The BCA program is 3 years long, affiliated to Karnataka University, Hubli.', 'Admissions'),
+('When was the BCA department established?', 'The BCA department was started in 1999 as a Department of Computer Science at P.C. Jabin Science College.', 'About'),
+
+-- Faculty
 ('Who is the BCA coordinator?', 'Mr. Siddalingappa Kadakol is the Coordinator for the BCA department at KLE.', 'Faculty'),
-('Where is the IT Help Desk?', 'For IT support, contact Mr. Mahesh Rao Koppal (Assistant Professor). He handles IT Help Desk queries.', 'Facilities'),
-('Is KLE BCA affiliated to any university?', 'Yes, KLE BCA is affiliated to Karnataka University, Dharwad. However, the institute has academic independence and conducts its own exams. Degrees are awarded by Karnataka University.', 'Academics'),
-('When was the BCA department established?', 'The BCA department was started in 1999 as a Department of Computer Science. It now operates with its own campus at P. C. Jabin Science College.', 'About'),
-('What is the 4 C''s philosophy?', 'KLE BCA focuses on forming students who are Competent, Committed, Creative, and Compassionate. Education is about quality of knowledge that builds character.', 'About'),
-('How many faculty members are there?', 'KLE BCA has 30 Assistant Professors, 5 Lab Instructors, and 4 Office Staff members providing comprehensive support to students.', 'Faculty'),
-('What facilities are available at KLE BCA?', 'KLE BCA offers excellent hardware and software resources, modern computer labs, and a well-equipped library for student learning.', 'Facilities')
+('Who handles IT Help Desk queries?', 'Mr. Mahesh Rao Koppal (Assistant Professor) manages the IT Help Desk. Contact him for technical support.', 'Facilities'),
+('How many faculty members are there?', 'The BCA department has 30 Assistant Professors, 5 Lab Instructors, and 4 Office Staff members.', 'Faculty'),
+
+-- Academics
+('Is KLE BCA affiliated to any university?', 'Yes, KLE BCA is affiliated to Karnataka University, Dharwad. The institute has academic independence and conducts its own exams. Degrees are awarded by Karnataka University.', 'Academics'),
+('What is the 4 C''s philosophy?', 'KLE BCA focuses on forming students who are Competent, Committed, Creative, and Compassionate. Education is about quality of knowledge that builds character, not just qualifications.', 'About'),
+('Does KLE conduct its own exams?', 'Yes, the institute conducts its own exams aligned with the curriculum. This academic independence allows for regularly updated syllabus and flexible scheduling.', 'Academics'),
+
+-- Facilities
+('What facilities does the BCA department have?', 'The department has excellent hardware and software resources, dedicated computer labs, and experienced faculty to support student learning.', 'Facilities'),
+('Where is P.C. Jabin Science College located?', 'P.C. Jabin Science College is located in Dharwad, Karnataka, India.', 'About'),
+
+-- Contact
+('How can I contact the BCA office?', 'You can contact the office staff: Mr. Basavaraj Hulkoti, Mr. Mahantesh G, Mrs. Shashikala Kallur, or Miss. Meghana Pattan during office hours.', 'Contact'),
+('Who should I contact for lab-related queries?', 'Contact the Lab Instructors: Mr. Manjunath Badiger, Miss. Huligemma Daivatti, Miss. S Usha, Mr. Vinayak Kulkarni, or Mr. Aditya Kulkarni.', 'Facilities')
 ON CONFLICT DO NOTHING;
 
 -- Sample announcements - KLE BCA Specific

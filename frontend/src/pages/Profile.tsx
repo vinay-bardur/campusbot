@@ -13,13 +13,12 @@ const Profile = () => {
       <div className="container mx-auto max-w-4xl py-16">
         <div className="mb-16 flex items-center justify-between">
           <h1 className="text-[48px] font-semibold text-[#1d1d1f]">Profile</h1>
-          <Button 
-            variant="outline" 
+          <button 
             onClick={() => navigate("/chat")}
-            className="border-[#d2d2d7] text-[#1d1d1f] hover:bg-[#f5f5f7]"
+            className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-8 py-3 rounded-full text-[16px] font-medium transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,122,255,0.3)] hover:-translate-y-0.5 active:translate-y-0"
           >
             Back to Chat
-          </Button>
+          </button>
         </div>
 
         <div className="grid gap-12 md:grid-cols-2">

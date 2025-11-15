@@ -136,19 +136,22 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-subtle p-4">
-      <div className="container mx-auto max-w-6xl py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <Button variant="outline" onClick={() => navigate("/chat")}>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-8 py-8">
+        <div className="mb-12 flex items-center justify-between">
+          <h1 className="text-[32px] font-semibold text-[#1d1d1f]">Admin Dashboard</h1>
+          <button 
+            onClick={() => navigate("/chat")}
+            className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-6 py-3 rounded-full font-medium transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,122,255,0.3)] hover:-translate-y-0.5"
+          >
             Back to Chat
-          </Button>
+          </button>
         </div>
 
-        <Tabs defaultValue="faqs" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="faqs">FAQs Management</TabsTrigger>
-            <TabsTrigger value="announcements">Announcements</TabsTrigger>
+        <Tabs defaultValue="faqs" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-2 bg-[#f5f5f7] p-1 rounded-lg">
+            <TabsTrigger value="faqs" className="data-[state=active]:bg-white data-[state=active]:text-[#007AFF] font-medium">FAQs Management</TabsTrigger>
+            <TabsTrigger value="announcements" className="data-[state=active]:bg-white data-[state=active]:text-[#007AFF] font-medium">Announcements</TabsTrigger>
           </TabsList>
 
           <TabsContent value="faqs" className="space-y-4">
@@ -189,10 +192,10 @@ const Admin = () => {
                       placeholder="e.g., Academics, Facilities"
                     />
                   </div>
-                  <Button type="submit" className="gap-2">
+                  <button type="submit" className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2">
                     <Plus className="h-4 w-4" />
                     Add FAQ
-                  </Button>
+                  </button>
                 </form>
               </CardContent>
             </Card>
@@ -265,10 +268,10 @@ const Admin = () => {
                       rows={4}
                     />
                   </div>
-                  <Button type="submit" className="gap-2">
+                  <button type="submit" className="bg-[#007AFF] hover:bg-[#0051D5] text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2">
                     <Plus className="h-4 w-4" />
                     Add Announcement
-                  </Button>
+                  </button>
                 </form>
               </CardContent>
             </Card>

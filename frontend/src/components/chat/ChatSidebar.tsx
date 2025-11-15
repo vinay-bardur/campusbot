@@ -121,9 +121,20 @@ export const ChatSidebar = ({
       <Separator />
 
       <div className="space-y-2 p-6">
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal hover:bg-[#f5f5f7]"
+        {isAdmin && (
+          <button
+            className="w-full flex items-center justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal text-[#1d1d1f] hover:bg-[rgba(0,0,0,0.05)] transition-colors duration-200"
+            onClick={() => {
+              navigate("/admin");
+              onMobileClose();
+            }}
+          >
+            <Shield className="h-4 w-4" />
+            Admin Dashboard
+          </button>
+        )}
+        <button
+          className="w-full flex items-center justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal text-[#1d1d1f] hover:bg-[rgba(0,0,0,0.05)] transition-colors duration-200"
           onClick={() => {
             navigate("/profile");
             onMobileClose();
@@ -131,15 +142,14 @@ export const ChatSidebar = ({
         >
           <UserIcon className="h-4 w-4" />
           Profile
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal text-[#ff3b30] hover:bg-[#ff3b30]/10"
+        </button>
+        <button
+          className="w-full flex items-center justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal text-[#ef4444] hover:bg-[rgba(239,68,68,0.1)] hover:text-[#dc2626] transition-colors duration-200"
           onClick={handleSignOut}
         >
           <LogOut className="h-4 w-4" />
           Sign Out
-        </Button>
+        </button>
       </div>
     </>
   );
