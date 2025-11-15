@@ -114,7 +114,8 @@
 - [ ] Faculty names are current
 - [ ] Contact information is accurate
 - [ ] Department philosophy correctly stated
-- [ ] Affiliation details correct (Karnataka University, Dharwad)
+- [ ] Location updated to Hubli, Karnataka
+- [ ] Affiliation details correct (Karnataka University, Hubli)
 
 ### Content Management
 - [ ] Admin can add/edit/delete FAQs

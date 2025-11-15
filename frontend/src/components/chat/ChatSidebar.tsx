@@ -94,12 +94,13 @@ export const ChatSidebar = ({
         <div className="space-y-1 py-4">
           <h3 className="mb-4 text-[13px] font-medium text-[#6e6e73] uppercase tracking-wide">Recent Chats</h3>
           {conversations.map((conv) => (
-            <Button
+            <button
               key={conv.id}
-              variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal hover:bg-[#f5f5f7]",
-                currentConversationId === conv.id && "bg-[#f5f5f7] text-[#007AFF]"
+                "w-full flex items-center justify-start gap-3 py-3 px-3 rounded-[8px] text-[15px] font-normal transition-colors duration-200",
+                currentConversationId === conv.id 
+                  ? "bg-[rgba(0,122,255,0.1)] text-[#007AFF] border-l-3 border-[#007AFF]" 
+                  : "text-[#6e6e73] hover:bg-[rgba(0,0,0,0.05)] hover:text-[#1d1d1f]"
               )}
               onClick={() => {
                 onSelectConversation(conv.id);
@@ -108,7 +109,7 @@ export const ChatSidebar = ({
             >
               <MessageSquare className="h-4 w-4" />
               <span className="truncate">{conv.title}</span>
-            </Button>
+            </button>
           ))}
           {conversations.length === 0 && (
             <p className="text-center text-[15px] text-[#86868b] py-8">

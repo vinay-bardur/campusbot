@@ -91,8 +91,9 @@ pip install -r requirements.txt
 - **Coordinator**: Mr. Siddalingappa Kadakol
 - **IT Help**: Mr. Mahesh Rao Koppal
 - **Established**: 1999
-- **Affiliation**: Karnataka University, Dharwad
+- **Affiliation**: Karnataka University, Hubli
 - **Philosophy**: 4 C's - Competent, Committed, Creative, Compassionate
+- **Location**: Hubli, Karnataka
 
 ### Faculty Structure
 - 30 Assistant Professors
