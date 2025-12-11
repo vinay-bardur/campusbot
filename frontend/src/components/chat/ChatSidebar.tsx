@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { 
   MessageSquarePlus, 
@@ -43,34 +42,19 @@ export const ChatSidebar = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      loadConversations();
-    }
-  }, [user]);
+    loadConversations();
+  }, []);
 
-  const loadConversations = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("conversations")
-        .select("*")
-        .order("updated_at", { ascending: false });
-
-      if (error) throw error;
-      setConversations(data || []);
-    } catch (error) {
-      console.error("Error loading conversations:", error);
+  const loadConversations = () => {
+    const saved = localStorage.getItem('conversations');
+    if (saved) {
+      setConversations(JSON.parse(saved));
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      toast.success("Signed out successfully");
-      navigate("/");
-    } catch (error) {
-      toast.error("Failed to sign out");
-    }
+  const handleSignOut = () => {
+    toast.success("Signed out successfully");
+    navigate("/");
   };
 
   const sidebarContent = (

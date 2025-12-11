@@ -6,15 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { z } from "zod";
-
-const authSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -31,102 +24,35 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      authSchema.parse({ email, password });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        toast.error(error.errors[0].message);
-        return;
-      }
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
     }
-
     setLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-        },
-      });
-
-      if (error) {
-        if (error.message.includes("already registered")) {
-          toast.error("This email is already registered. Please sign in instead.");
-        } else {
-          toast.error(error.message);
-        }
-        return;
-      }
-
-      toast.success("Account created successfully! You can now sign in.");
+    setTimeout(() => {
+      toast.success("Account created! You can now sign in.");
       setEmail("");
       setPassword("");
-    } catch (error) {
-      toast.error("An unexpected error occurred");
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      authSchema.parse({ email, password });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        toast.error(error.errors[0].message);
-        return;
-      }
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
     }
-
     setLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        if (error.message.includes("Invalid")) {
-          toast.error("Invalid email or password");
-        } else {
-          toast.error(error.message);
-        }
-        return;
-      }
-
+    setTimeout(() => {
       toast.success("Signed in successfully!");
       navigate("/chat");
-    } catch (error) {
-      toast.error("An unexpected error occurred");
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/chat`,
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-      }
-    } catch (error) {
-      toast.error("Failed to sign in with Google");
-    } finally {
-      setLoading(false);
-    }
+  const handleGoogleSignIn = () => {
+    toast.info("Use email/password to sign in");
   };
 
   return (

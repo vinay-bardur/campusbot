@@ -3,10 +3,9 @@ import { ChatSidebar, ChatSidebarTrigger } from "@/components/chat/ChatSidebar";
 import { ChatMessage } from "@/components/chat/ChatMessage";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { streamChat } from "@/lib/chatApi";
+import { addConversation, updateConversation } from "@/lib/localDb";
 import { toast } from "sonner";
 import { Loader2, HelpCircle, Megaphone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -31,59 +30,28 @@ const Chat = () => {
     }
   }, [messages]);
 
-  const createNewConversation = async () => {
-    if (!user) return null;
-
-    try {
-      const { data, error } = await supabase
-        .from("conversations")
-        .insert({ user_id: user.id, title: "New Chat" })
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data.id;
-    } catch (error) {
-      console.error("Error creating conversation:", error);
-      toast.error("Failed to create conversation");
-      return null;
-    }
+  const createNewConversation = () => {
+    const conv = addConversation("New Chat");
+    return conv.id;
   };
 
-  const saveMessage = async (conversationId: string, role: "user" | "assistant", content: string) => {
-    try {
-      await supabase
-        .from("chat_messages")
-        .insert({
-          conversation_id: conversationId,
-          role,
-          content,
-        });
-    } catch (error) {
-      console.error("Error saving message:", error);
-    }
+  const saveMessage = (conversationId: string, role: "user" | "assistant", content: string) => {
+    const key = `messages_${conversationId}`;
+    const messages = JSON.parse(localStorage.getItem(key) || '[]');
+    messages.push({ role, content, created_at: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(messages));
   };
 
-  const updateConversationTitle = async (conversationId: string, firstMessage: string) => {
-    try {
-      const title = firstMessage.slice(0, 50) + (firstMessage.length > 50 ? "..." : "");
-      await supabase
-        .from("conversations")
-        .update({ title, updated_at: new Date().toISOString() })
-        .eq("id", conversationId);
-    } catch (error) {
-      console.error("Error updating title:", error);
-    }
+  const updateConversationTitle = (conversationId: string, firstMessage: string) => {
+    const title = firstMessage.slice(0, 50) + (firstMessage.length > 50 ? "..." : "");
+    updateConversation(conversationId, title);
   };
 
   const handleSend = async (input: string) => {
-    if (!user) return;
-
     let conversationId = currentConversationId;
     
     if (!conversationId) {
-      conversationId = await createNewConversation();
-      if (!conversationId) return;
+      conversationId = createNewConversation();
       setCurrentConversationId(conversationId);
     }
 
@@ -91,10 +59,10 @@ const Chat = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
-    await saveMessage(conversationId, "user", input);
+    saveMessage(conversationId, "user", input);
 
     if (messages.length === 0) {
-      await updateConversationTitle(conversationId, input);
+      updateConversationTitle(conversationId, input);
     }
 
     let assistantContent = "";
@@ -117,13 +85,9 @@ const Chat = () => {
       await streamChat({
         messages: [...messages, userMessage],
         onDelta: updateAssistantMessage,
-        onDone: async () => {
+        onDone: () => {
           setIsLoading(false);
-          await saveMessage(conversationId!, "assistant", assistantContent);
-          await supabase
-            .from("conversations")
-            .update({ updated_at: new Date().toISOString() })
-            .eq("id", conversationId!);
+          saveMessage(conversationId!, "assistant", assistantContent);
         },
         onError: (error) => {
           toast.error(error);
@@ -141,25 +105,11 @@ const Chat = () => {
     setCurrentConversationId(null);
   };
 
-  const handleSelectConversation = async (conversationId: string) => {
+  const handleSelectConversation = (conversationId: string) => {
     setCurrentConversationId(conversationId);
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase
-        .from("chat_messages")
-        .select("role, content")
-        .eq("conversation_id", conversationId)
-        .order("created_at");
-
-      if (error) throw error;
-      setMessages((data || []) as Message[]);
-    } catch (error) {
-      console.error("Error loading messages:", error);
-      toast.error("Failed to load conversation");
-    } finally {
-      setIsLoading(false);
-    }
+    const key = `messages_${conversationId}`;
+    const savedMessages = JSON.parse(localStorage.getItem(key) || '[]');
+    setMessages(savedMessages.map((m: any) => ({ role: m.role, content: m.content })));
   };
 
   const handleQuickAction = (action: string) => {

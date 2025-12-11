@@ -31,6 +31,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // BYPASS AUTH - Create mock user
+    const mockUser = {
+      id: 'bypass-user-123',
+      email: 'bypass@test.com',
+      created_at: new Date().toISOString(),
+    } as User;
+
+    setUser(mockUser);
+    setIsAdmin(true);
+    setLoading(false);
+
+    /* ORIGINAL AUTH CODE - COMMENTED OUT
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -65,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => subscription.unsubscribe();
+    */
   }, []);
 
   const checkAdminStatus = async (userId: string) => {

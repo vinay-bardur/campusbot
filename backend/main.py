@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 from typing import Optional
+from contextlib import asynccontextmanager
 import logging
 
 from dotenv import load_dotenv
@@ -19,12 +20,25 @@ from services.supabase_service import get_supabase_service
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting up ClarifyAI API...")
+    try:
+        db = get_supabase_service()
+        logger.info("✓ Supabase connection established successfully")
+    except Exception as e:
+        logger.error(f"✗ Failed to connect to Supabase: {str(e)}")
+        logger.warning("API will start but database operations may fail")
+    yield
+    logger.info("Shutting down ClarifyAI API...")
+
 app = FastAPI(
     title="ClarifyAI API",
     description="Intelligent campus assistant API for FAQs, announcements, and chat",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 app.add_middleware(
@@ -64,25 +78,6 @@ async def global_exception_handler(request: Request, exc: Exception):
         }
     )
 
-
-
-
-@app.on_event("startup")
-async def startup_event():
-
-    logger.info("Starting up ClarifyAI API...")
-    try:
-        db = get_supabase_service()
-        logger.info("✓ Supabase connection established successfully")
-    except Exception as e:
-        logger.error(f"✗ Failed to connect to Supabase: {str(e)}")
-        logger.warning("API will start but database operations may fail")
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-
-    logger.info("Shutting down ClarifyAI API...")
 
 
 
