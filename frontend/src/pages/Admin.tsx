@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { supabase } from "@/integrations/supabase/client";
+import { getFAQs, addFAQ, deleteFAQ, getAnnouncements, addAnnouncement, deleteAnnouncement } from "@/lib/localDb";
 import { toast } from "sonner";
-import { Loader2, Plus, Trash2, Edit } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface FAQ {
@@ -37,94 +37,55 @@ const Admin = () => {
     loadData();
   }, []);
 
-  const loadData = async () => {
+  const loadData = () => {
     setLoading(true);
-    try {
-      const [faqsResult, announcementsResult] = await Promise.all([
-        supabase.from("faqs").select("*").order("created_at", { ascending: false }),
-        supabase.from("announcements").select("*").order("created_at", { ascending: false }),
-      ]);
-
-      if (faqsResult.error) throw faqsResult.error;
-      if (announcementsResult.error) throw announcementsResult.error;
-
-      setFaqs(faqsResult.data || []);
-      setAnnouncements(announcementsResult.data || []);
-    } catch (error) {
-      console.error("Error loading data:", error);
-      toast.error("Failed to load admin data");
-    } finally {
-      setLoading(false);
-    }
+    setFaqs(getFAQs());
+    setAnnouncements(getAnnouncements());
+    setLoading(false);
   };
 
-  const handleAddFaq = async (e: React.FormEvent) => {
+  const handleAddFaq = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newFaq.question || !newFaq.answer) {
       toast.error("Please fill in all required fields");
       return;
     }
-
-    try {
-      const { error } = await supabase.from("faqs").insert({
-        question: newFaq.question,
-        answer: newFaq.answer,
-        category: newFaq.category || null,
-      });
-
-      if (error) throw error;
-
-      toast.success("FAQ added successfully");
-      setNewFaq({ question: "", answer: "", category: "" });
-      loadData();
-    } catch (error) {
-      console.error("Error adding FAQ:", error);
-      toast.error("Failed to add FAQ");
-    }
+    addFAQ({
+      question: newFaq.question,
+      answer: newFaq.answer,
+      category: newFaq.category || "General",
+    });
+    toast.success("FAQ added successfully");
+    setNewFaq({ question: "", answer: "", category: "" });
+    loadData();
   };
 
-  const handleDeleteFaq = async (id: string) => {
-    try {
-      const { error } = await supabase.from("faqs").delete().eq("id", id);
-      if (error) throw error;
-      toast.success("FAQ deleted successfully");
-      loadData();
-    } catch (error) {
-      console.error("Error deleting FAQ:", error);
-      toast.error("Failed to delete FAQ");
-    }
+  const handleDeleteFaq = (id: string) => {
+    deleteFAQ(id);
+    toast.success("FAQ deleted successfully");
+    loadData();
   };
 
-  const handleAddAnnouncement = async (e: React.FormEvent) => {
+  const handleAddAnnouncement = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAnnouncement.title || !newAnnouncement.content) {
       toast.error("Please fill in all fields");
       return;
     }
-
-    try {
-      const { error } = await supabase.from("announcements").insert(newAnnouncement);
-      if (error) throw error;
-
-      toast.success("Announcement added successfully");
-      setNewAnnouncement({ title: "", content: "" });
-      loadData();
-    } catch (error) {
-      console.error("Error adding announcement:", error);
-      toast.error("Failed to add announcement");
-    }
+    addAnnouncement({
+      title: newAnnouncement.title,
+      content: newAnnouncement.content,
+      priority: 'medium'
+    });
+    toast.success("Announcement added successfully");
+    setNewAnnouncement({ title: "", content: "" });
+    loadData();
   };
 
-  const handleDeleteAnnouncement = async (id: string) => {
-    try {
-      const { error } = await supabase.from("announcements").delete().eq("id", id);
-      if (error) throw error;
-      toast.success("Announcement deleted successfully");
-      loadData();
-    } catch (error) {
-      console.error("Error deleting announcement:", error);
-      toast.error("Failed to delete announcement");
-    }
+  const handleDeleteAnnouncement = (id: string) => {
+    deleteAnnouncement(id);
+    toast.success("Announcement deleted successfully");
+    loadData();
   };
 
   if (loading) {
