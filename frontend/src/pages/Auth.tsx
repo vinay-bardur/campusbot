@@ -45,13 +45,15 @@ const Auth = () => {
     }
     setLoading(true);
     setTimeout(() => {
+      const isAdmin = email.toLowerCase() === 'vinay.g.b@gmail.com';
       const mockUser = {
         id: Date.now().toString(),
         email: email,
+        isAdmin: isAdmin,
         created_at: new Date().toISOString(),
       };
       localStorage.setItem('loggedInUser', JSON.stringify(mockUser));
-      toast.success("Signed in successfully!");
+      toast.success(isAdmin ? "Signed in as Admin!" : "Signed in successfully!");
       window.location.href = '/chat';
     }, 500);
   };

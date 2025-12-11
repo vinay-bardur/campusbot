@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { User, Session } from "@supabase/supabase-js";
 
 interface AuthContextType {
-  user: User | null;
+  user: (User & { isAdmin?: boolean }) | null;
   session: Session | null;
   isAdmin: boolean;
   loading: boolean;
@@ -33,8 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Check if user is logged in from localStorage
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (loggedInUser) {
-      setUser(JSON.parse(loggedInUser));
-      setIsAdmin(true);
+      const userData = JSON.parse(loggedInUser);
+      setUser(userData);
+      setIsAdmin(userData.isAdmin || false);
     }
     setLoading(false);
 

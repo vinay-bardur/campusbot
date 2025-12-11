@@ -37,6 +37,12 @@ const Admin = () => {
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (!loggedInUser) {
       navigate('/auth');
+      return;
+    }
+    const userData = JSON.parse(loggedInUser);
+    if (!userData.isAdmin) {
+      toast.error('Admin access required');
+      navigate('/chat');
     }
   }, [navigate]);
 
