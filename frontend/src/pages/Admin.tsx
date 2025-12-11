@@ -34,6 +34,13 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+      navigate('/auth');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     loadData();
   }, []);
 

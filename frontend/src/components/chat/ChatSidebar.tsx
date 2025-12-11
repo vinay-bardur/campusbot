@@ -53,8 +53,9 @@ export const ChatSidebar = ({
   };
 
   const handleSignOut = () => {
+    localStorage.removeItem('loggedInUser');
     toast.success("Signed out successfully");
-    navigate("/");
+    window.location.href = '/';
   };
 
   const sidebarContent = (

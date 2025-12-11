@@ -45,9 +45,14 @@ const Auth = () => {
     }
     setLoading(true);
     setTimeout(() => {
+      const mockUser = {
+        id: Date.now().toString(),
+        email: email,
+        created_at: new Date().toISOString(),
+      };
+      localStorage.setItem('loggedInUser', JSON.stringify(mockUser));
       toast.success("Signed in successfully!");
-      navigate("/chat");
-      setLoading(false);
+      window.location.href = '/chat';
     }, 500);
   };
 

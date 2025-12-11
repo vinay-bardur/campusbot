@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 
 interface AuthContextType {
   user: User | null;
@@ -31,15 +30,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // BYPASS AUTH - Create mock user
-    const mockUser = {
-      id: 'bypass-user-123',
-      email: 'bypass@test.com',
-      created_at: new Date().toISOString(),
-    } as User;
-
-    setUser(mockUser);
-    setIsAdmin(true);
+    // Check if user is logged in from localStorage
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+      setIsAdmin(true);
+    }
     setLoading(false);
 
     /* ORIGINAL AUTH CODE - COMMENTED OUT

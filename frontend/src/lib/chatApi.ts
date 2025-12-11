@@ -15,7 +15,7 @@ COORDINATOR:
 Mr. Siddalingappa Kadakol
 
 ASSISTANT PROFESSORS (30):
-Mrs. Hema Chikkaraddi, Mr. Mahesh Rao Koppal (IT Help Desk), Miss. Sharada Mulkipatil, Miss. Shridevi Kuri, Mrs. Sunaina M M, Mr. Manjunath Patil, Mr. Ravi Walikar, Miss. Soniya Gudgunti, Miss. Shobha Girijannavar, Miss. Savita Girijannavar, Miss. Bhavani Gollar, Mr. Sanjay Garag, Miss. Pooja Pattar, Miss. Nikhita Patil, Miss. Varuni Patil, Miss. Poornima Belagali, Mrs. Krupa Ashwini, Mrs. Akshatha C S, Miss. Poornima Chandur, Mr. Deepak Savadatti, Miss. Aruna Kudleppanavar, Miss. Suraksha M B, Miss. Shweta Gangal, Miss. Kavya Kulkarni, Mrs. Poornima Harihar, Mr. Ravikiran Badiger, Mrs. Sampada Kulkarni, Mrs. Anita Kore, Mr. Shivraj Shindhe
+Mrs. Hema Chikkaraddi, Mr. Mahesh Rao Koppal Miss. Sharada Mulkipatil, Miss. Shridevi Kuri, Mrs. Sunaina M M, Mr. Manjunath Patil, Mr. Ravi Walikar, Miss. Soniya Gudgunti, Miss. Shobha Girijannavar, Miss. Savita Girijannavar, Miss. Bhavani Gollar, Mr. Sanjay Garag, Miss. Pooja Pattar, Miss. Nikhita Patil, Miss. Varuni Patil, Miss. Poornima Belagali, Mrs. Krupa Ashwini, Mrs. Akshatha C S, Miss. Poornima Chandur, Mr. Deepak Savadatti, Miss. Aruna Kudleppanavar, Miss. Suraksha M B, Miss. Shweta Gangal, Miss. Kavya Kulkarni, Mrs. Poornima Harihar, Mr. Ravikiran Badiger, Mrs. Sampada Kulkarni, Mrs. Anita Kore, Mr. Shivraj Shindhe
 
 LAB INSTRUCTORS (5):
 Mr. Manjunath Badiger, Miss. Huligemma Daivatti, Miss. S Usha, Mr. Vinayak Kulkarni, Mr. Aditya Kulkarni
